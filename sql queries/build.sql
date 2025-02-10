@@ -99,3 +99,25 @@ EXEC retail.InsertData 'products', 'products';
 EXEC retail.InsertData 'geographic_locations', 'geographic_locations';
 EXEC retail.InsertData 'calender', 'calender';
 EXEC retail.InsertData 'sales', 'sales';
+
+/* ALTER TABLE retail.sales
+ADD price_category VARCHAR(8);
+
+WITH price_category_cte AS (
+    SELECT 
+        product_id,
+        NTILE(5) OVER (ORDER BY sales) AS price_cat_no
+    FROM retail.sales
+)
+UPDATE retail.sales
+SET price_category = 
+    CASE 
+        WHEN p.price_cat_no = 1 THEN 'Low'
+        WHEN p.price_cat_no = 2 THEN 'Medium'
+        WHEN p.price_cat_no = 3 THEN 'High'
+        WHEN p.price_cat_no = 4 THEN 'Premium'
+        ELSE 'Elite'
+    END
+FROM retail.sales s
+JOIN price_category_cte p
+    ON s.product_id = p.product_id; */
