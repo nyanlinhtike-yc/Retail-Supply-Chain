@@ -137,4 +137,4 @@ EXEC retail.InsertData 'orders', 'orders';
 
 [Here] we go to the next step.
 
-[Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Checking%20Data%20Integrity.md
+[Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Validating%20Data%20Integrity.md
