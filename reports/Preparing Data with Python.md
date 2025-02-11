@@ -52,6 +52,7 @@ orders = orders[['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
 We removed duplicate values to ensure each table has a unique ID column and verified that no duplicates remain.
 
 *For `customers` table.*
+
 ```Python
 # Drop duplicated values to create many to one relationship with orders table.
 customers = customers.drop_duplicates(subset='Customer ID')
@@ -89,7 +90,7 @@ geographic_locations[geographic_locations.duplicated()].any()
 
 |                |               |
 |----------------|---------------|
-|*Location ID *    |*False*          |
+|*Location ID*    |*False*          |
 |*Country*         |*False*          |
 |*City*            |*False*          |
 |*State*           |*False*          |
