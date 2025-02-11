@@ -21,7 +21,7 @@ This project focuses on **analyzing product segmentation** and **optimizing disc
 
 **Retail Sales** distributes a diverse ragne of products such as Technology, Funiture and Office Supplies, across the country. The company focuses on delivering high-quality products to meet customer demands while optimizing sales strategies. By leveraging data-driven insights, **Retail Sales** aim to enhance operational efficiency and improve customer satisfaction.
 
-<img alt="retail_sales" src="https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/Main/images/retail%20sales.webp">
+<img alt="retail_sales" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/retail%20sales.webp">
 
 ## Data Information 📊
 
@@ -55,14 +55,14 @@ These datasets provide detailed information on retail orders, including sales pe
 
 ## Recomemdations 📄
 
-[Project Overview]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain?tab=readme-ov-file#project-overview
-[Business Description]: https://www.google.com
-[Data Information]: https://www.google.com
-[Tools & Technologies]: https://www.google.com
-[Methodology]: https://www.google.com
-[Our Approach: A Step-by-Step Guide]: https://www.google.com
-[Key Insights]: https://www.google.com
-[Recommendations]: https://www.google.com
+[Project Overview]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#project-overview-
+[Business Description]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#business-description-
+[Data Information]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#data-information-
+[Tools & Technologies]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#tools--techanologies-%EF%B8%8F
+[Methodology]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#methodology-%EF%B8%8F
+[Our Approach: A Step-by-Step Guide]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#our-approach-a-step-by-step-guide-
+[Key Insights]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#key-insights-
+[Recommendations]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#recomemdations-
 [Preparing Data with Python]: https://www.google.com
 [Setting Up SQL Database]: https://www.google.com
 [Checking Data Integrity]: https://www.google.com
