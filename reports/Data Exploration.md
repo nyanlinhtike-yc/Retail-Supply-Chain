@@ -170,7 +170,7 @@ ORDER BY total_sales DESC;
 
 <img alt="d13" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d13.png">
 
-*"Most discounted sales show a **negative** profit value, which is noteworthy. Further analysis is needed to understand this trend."*
+> *"Most discounted sales show a **negative** profit value, which is noteworthy. Further analysis is needed to understand this trend."*
 
 [Here] we go to the next step.
 
