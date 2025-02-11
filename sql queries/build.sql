@@ -1,7 +1,7 @@
 USE RetailSupplyChainDB;
 GO
 
-DROP TABLE IF EXISTS retail.sales;
+DROP TABLE IF EXISTS retail.orders;
 DROP TABLE IF EXISTS retail.customers;
 DROP TABLE IF EXISTS retail.products;
 DROP TABLE IF EXISTS retail.geographic_locations;
@@ -52,7 +52,7 @@ CREATE TABLE retail.calender (
 	day_name CHAR(9)
 );
 
-CREATE TABLE retail.sales (
+CREATE TABLE retail.orders (
 	row_id INT NOT NULL,
 	order_id CHAR(14) NOT NULL,
 	order_date DATE,
@@ -98,7 +98,7 @@ EXEC retail.InsertData 'customers', 'customers';
 EXEC retail.InsertData 'products', 'products';
 EXEC retail.InsertData 'geographic_locations', 'geographic_locations';
 EXEC retail.InsertData 'calender', 'calender';
-EXEC retail.InsertData 'sales', 'sales';
+EXEC retail.InsertData 'orders', 'orders';
 
 /* ALTER TABLE retail.sales
 ADD price_category VARCHAR(8);
