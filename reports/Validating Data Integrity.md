@@ -107,7 +107,7 @@ WHERE sales < (SELECT DISTINCT PERCENTILE_CONT(0.05) WITHIN GROUP (ORDER BY sale
 
 <img alt="c6" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/c6.png">
 
-*Even though outliers account for 10% of sales, their related values should not be removed due to the diversity of products. Instead of removing these values, we will perform a segment analysis in the next step based on the `sales` column.*
+*Even though outliers account for 10% of sales, their related values should not be removed due to the **diversity of products**. Instead of removing these values, we will perform a **segment analysis** in the next step based on the `sales` column.*
 
 [Here] we go to the next step.
 
