@@ -13,7 +13,7 @@ FROM retail.orders;
 
 <img alt="d1" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d1.png">
 
-#### How many unique customers are there in the `customers` table?
+**How many unique customers are there in the `customers` table?**
 
 ```SQL
 SELECT
@@ -23,7 +23,7 @@ FROM retail.customers;
 
 <img alt="d2" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d2.png">
 
-How many unique products are there in the `products` table?
+**How many unique products are there in the `products` table?**
 
 ```SQL
 SELECT
@@ -33,7 +33,7 @@ FROM retail.products;
 
 <img alt="d3" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d3.png">
 
-What shipping methods are used for nationwide product distribution?
+**What shipping methods are used for nationwide product distribution?**
 
 ```SQL
 SELECT DISTINCT
@@ -43,7 +43,7 @@ FROM retail.orders;
 
 <img alt="d4" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d4.png">
 
-What are the company's customer segments?
+**What are the company's customer segments?**
 
 ```SQL
 SELECT DISTINCT	
@@ -53,7 +53,7 @@ FROM retail.customers;
 
 <img alt="d5" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d5.png">
 
-What product categories do they offer?
+**What product categories do they offer?**
 
 ```SQL
 SELECT DISTINCT
@@ -63,7 +63,7 @@ FROM retail.products;
 
 <img alt="d6" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d6.png">
 
-How many product units were sold, and how much revenue was generated? How much profit was earned?
+**How many product units were sold, and how much revenue was generated? How much profit was earned**?
 
 ```SQL
 SELECT 
@@ -75,7 +75,7 @@ FROM retail.orders;
 
 <img alt="d7" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d7.png">
 
-How many sales were generated for each customer segment?
+**How many sales were generated for each customer segment?**
 
 ```SQL
 SELECT
@@ -90,7 +90,7 @@ ORDER BY total_sales DESC;
 
 <img alt="d8" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d8.png">
 
-What is the total sales volumn for each product category and sub-category?
+**What is the total sales volumn for each product category and sub-category?**
 
 ```SQL
 SELECT
@@ -108,7 +108,7 @@ ORDER BY total_sales DESC;
 
 <img alt="d9" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d9.png">
 
-How much sales were generated for each state?
+**How much sales were generated for each state?**
 
 ```SQL
 SELECT
@@ -123,7 +123,7 @@ ORDER BY total_sales DESC;
 
 <img alt="d10" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d10.png">
 
-What are the total sales, total profits and their profit ratio for each shipping methods? 
+**What are the total sales, total profits and their profit ratio for each shipping methods**? 
 
 > *"We are only exploring shipping methods at a high level and will not conduct further analysis on this subject, as it deviates from our main objective."*
 
@@ -140,7 +140,7 @@ ORDER BY total_sales DESC;
 
 <img alt="d11" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d11.png">
 
-#### What is the discount distribution for all products?
+**What is the discount distribution for all products?**
 
 ```SQL
 SELECT 
@@ -161,12 +161,16 @@ SELECT
 	discount,
 	SUM(sales) AS total_sales,
 	SUM(profit) AS total_profits,
-	SUM(profit) / SUM(sales) AS profit_ratio
+	ROUND(SUM(profit) / SUM(sales), 2) AS profit_ratio
 FROM retail.orders
 WHERE discount <> 0.00
 GROUP BY discount
 ORDER BY total_sales DESC;
 ```
+
+<img alt="d13" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d13.png">
+
+*"Most discounted sales show a **negative** profit value, which is noteworthy. Further analysis is needed to understand this trend."*
 
 [Here] we go to the next step.
 
