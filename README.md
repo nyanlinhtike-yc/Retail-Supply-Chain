@@ -33,7 +33,7 @@ These datasets provide detailed information on retail orders, including sales pe
 | `customers`        | Contains customer information such as demographics and purchasing behavior. |
 | `products`        | Holds product details, including category, sub-category and product name. |
 | `geographic_locations` | Includes location-based data, such as regions, states, cities and postal code. |
-| `calendar`        | Maintains date-related information for sales analysis. |
+| `calendar`        | Stores date-related information for sales analysis. |
 
 ## Tools & Techanologies ⚒️
 
@@ -42,8 +42,6 @@ These datasets provide detailed information on retail orders, including sales pe
 * **Power BI** (Visualization)
 
 ## Methodology ⚖️
-
-
 
 ## Our Approach: A Step-by-Step Guide 🪜
 
