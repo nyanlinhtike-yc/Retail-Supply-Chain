@@ -13,6 +13,55 @@ A data analysis project primarily utilizing SQL and Python for the data cleaning
 7. Key Insights
 8. Recommendations
 
+f
+f
+f
+f
+f
+f
+
+f
+f
+f
+
+
+f
+
+f
+
+f
+
+f
+
+f
+
+f
+
+f
+f
+
+f
+f
+f
+f
+f
+f
+f
+
+
+f
+f
+
+f
+
+
+f
+
+f
+
+f
+
+f
 ## Project Overview
 
 This project focuses on analyzing product segmentation and optimizing discounts for the upcoming seasons to maximize sales and revenue.
