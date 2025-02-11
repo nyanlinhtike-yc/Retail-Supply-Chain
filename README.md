@@ -47,7 +47,7 @@ These datasets provide detailed information on retail orders, including sales pe
 
 1. [Preparing Data with Python]
 2. [Setting Up SQL Database]
-3. [Checking Data Integrity]
+3. [Validating Data Integrity]
 4. [Data Exploration]
 5. [Diving into the Analysis]
 
@@ -65,7 +65,7 @@ These datasets provide detailed information on retail orders, including sales pe
 [Recommendations]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#recomemdations-
 [Preparing Data with Python]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Preparing%20Data%20with%20Python.md
 [Setting Up SQL Database]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Setting%20Up%20SQL%20Database.md
-[Checking Data Integrity]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Checking%20Data%20Integrity.md
+[Validating Data Integrity]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Validating%20Data%20Integrity.md
 [Data Exploration]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Data%20Exploration.md
 [Diving into the Analysis]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Diving%20into%20the%20Analysis.md
 
