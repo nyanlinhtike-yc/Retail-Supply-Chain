@@ -7,11 +7,12 @@ A data analysis project primarily utilizing **SQL** and **Python** for the data 
 1. [Project Overview]
 2. [Business Description]
 3. [Data Information]
-4. [Tools & Technologies]
-5. [Methodology]
-6. [Our Approach: A Step-by-Step Guide]
-7. [Key Insights]
-8. [Recommendations]
+4. [Database Schema]
+5. [Tools & Technologies]
+6. [Methodology]
+7. [Our Approach: A Step-by-Step Guide]
+8. [Key Insights]
+9. [Recommendations]
 
 ## Project Overview 📌
 
@@ -34,6 +35,10 @@ These datasets provide detailed information on retail orders, including sales pe
 | `products`        | Holds product details, including category, sub-category and product name. |
 | `geographic_locations` | Includes location-based data, such as regions, states, cities and postal code. |
 | `calendar`        | Stores date-related information for sales analysis. |
+
+## Database Schema 📝
+
+<img alt="schema" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/schema.webp">
 
 ## Tools & Techanologies ⚒️
 
@@ -58,6 +63,7 @@ These datasets provide detailed information on retail orders, including sales pe
 [Project Overview]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#project-overview-
 [Business Description]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#business-description-
 [Data Information]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#data-information-
+[Database Schema]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#database-schema-
 [Tools & Technologies]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#tools--techanologies-%EF%B8%8F
 [Methodology]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#methodology-%EF%B8%8F
 [Our Approach: A Step-by-Step Guide]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#our-approach-a-step-by-step-guide-
