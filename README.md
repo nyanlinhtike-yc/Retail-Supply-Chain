@@ -38,7 +38,7 @@ These datasets provide detailed information on retail orders, including sales pe
 
 ## Database Schema 📝
 
-<img alt="schema" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/schema.webp">
+<img alt="schema" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/schema.png">
 
 ## Tools & Techanologies ⚒️
 
