@@ -65,11 +65,11 @@ These datasets provide detailed information on retail orders, including sales pe
 [Our Approach: A Step-by-Step Guide]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#our-approach-a-step-by-step-guide-
 [Key Insights]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#key-insights-
 [Recommendations]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#recomemdations-
-[Preparing Data with Python]: https://www.google.com
-[Setting Up SQL Database]: https://www.google.com
-[Checking Data Integrity]: https://www.google.com
-[Data Exploration]: https://www.google.com
-[Diving into the Analysis]: https://www.google.com
+[Preparing Data with Python]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Preparing%20Data%20with%20Python.md
+[Setting Up SQL Database]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Setting%20Up%20SQL%20Database.md
+[Checking Data Integrity]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Checking%20Data%20Integrity.md
+[Data Exploration]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Data%20Exploration.md
+[Diving into the Analysis]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Diving%20into%20the%20Analysis.md
 
 > "*This is a personal project portfolio primarily focused on SQL*".
 
