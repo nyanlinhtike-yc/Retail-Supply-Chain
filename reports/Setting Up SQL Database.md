@@ -133,6 +133,8 @@ EXEC retail.InsertData 'calender', 'calender';
 EXEC retail.InsertData 'orders', 'orders';
 ```
 
+<img alt="s1" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/s1.png">
+
 [Here] we go to the next step.
 
 [Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Checking%20Data%20Integrity.md
