@@ -130,7 +130,7 @@ EXEC retail.InsertData 'customers', 'customers';
 EXEC retail.InsertData 'products', 'products';
 EXEC retail.InsertData 'geographic_locations', 'geographic_locations';
 EXEC retail.InsertData 'calender', 'calender';
-EXEC retail.InsertData 'sales', 'sales';
+EXEC retail.InsertData 'orders', 'orders';
 ```
 
 [Here] we go to the next step.
