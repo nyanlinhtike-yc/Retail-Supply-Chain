@@ -43,6 +43,8 @@ These datasets provide detailed information on retail orders, including sales pe
 
 ## Methodology ⚖️
 
+
+
 ## Our Approach: A Step-by-Step Guide 🪜
 
 1. [Preparing Data with Python]
