@@ -53,7 +53,7 @@ WITH check_duplicates_cte AS (
 			quantity,
 			discount,
 			profit ORDER BY row_id) as row_num
-	FROM retail.sales
+	FROM retail.orders
 )
 
 SELECT * 
@@ -73,24 +73,24 @@ SELECT
 	AVG(profit) AS avg_profit,
 	MIN(profit) AS min_profit,
 	MAX(profit) AS max_profit
-FROM retail.sales;
+FROM retail.orders;
 
 SELECT DISTINCT
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY sales) OVER() AS median_sales,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY discount) OVER() AS median_discount,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY profit) OVER() AS median_profit	
-FROM retail.sales;
+FROM retail.orders;
 
-SELECT COUNT(*)
-FROM retail.sales
-WHERE sales < (SELECT DISTINCT PERCENTILE_CONT(0.05) WITHIN GROUP (ORDER BY profit) OVER() FROM retail.sales)
-	OR sales > (SELECT DISTINCT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY profit) OVER() FROM retail.sales);
+SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM retail.orders) AS outliers_amounts
+FROM retail.orders
+WHERE sales < (SELECT DISTINCT PERCENTILE_CONT(0.05) WITHIN GROUP (ORDER BY sales) OVER() FROM retail.orders)
+	OR sales > (SELECT DISTINCT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY sales) OVER() FROM retail.orders);
 
 -- Data Exploration
 SELECT
 	MIN(order_date) AS min_order_date,
 	MAX(order_date) AS max_order_date
-FROM retail.sales;
+FROM retail.orders;
 
 SELECT
 	COUNT(DISTINCT customer_id) AS unique_customers
@@ -102,7 +102,7 @@ FROM retail.products;
 
 SELECT DISTINCT
 	ship_mode 
-FROM retail.sales;
+FROM retail.orders;
 
 SELECT DISTINCT	
 	segment
@@ -116,14 +116,14 @@ SELECT
 	SUM(sales) AS revenue,
 	SUM(quantity) AS total_qty,
 	SUM(profit) AS profit
-FROM retail.sales;
+FROM retail.orders;
 
 SELECT
 	segment,
 	SUM(sales) AS total_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.customers c
-	ON s.customer_id = c.customer_id
+	ON o.customer_id = c.customer_id
 GROUP BY segment
 ORDER BY total_sales DESC;
 
@@ -131,9 +131,9 @@ SELECT
 	category,
 	sub_category,
 	SUM(sales) AS total_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.products p
-	ON s.product_id = p.product_id
+	ON o.product_id = p.product_id
 GROUP BY 
 	category,
 	sub_category
@@ -142,55 +142,25 @@ ORDER BY total_sales DESC;
 SELECT
 	state,
 	SUM(sales) AS total_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.geographic_locations g
-	ON s.location_id = g.location_id
+	ON o.location_id = g.location_id
 GROUP BY state
-ORDER BY total_sales DESC;
-
-SELECT
-	region,
-	SUM(sales) AS total_sales
-FROM retail.sales s
-JOIN retail.geographic_locations g
-	ON s.location_id = g.location_id
-GROUP BY region
 ORDER BY total_sales DESC;
 
 SELECT
 	ship_mode,
 	SUM(sales) AS total_sales,
 	SUM(profit) AS total_profits,
-	SUM(profit) / SUM(sales) AS profit_ratio
-FROM retail.sales
+	ROUND(SUM(profit) / SUM(sales), 2) AS profit_ratio
+FROM retail.orders
 GROUP BY ship_mode
-ORDER BY total_sales DESC;
-
-SELECT
-	quarter_q AS quarter,
-	month_name,
-	SUM(sales) AS total_sales
-FROM retail.sales s
-JOIN retail.calender c
-	ON s.order_date = c.date
-GROUP BY
-	quarter_q,
-	month_name
-ORDER BY total_sales DESC;
-
-SELECT
-	day_name,
-	SUM(sales) AS total_sales
-FROM retail.sales s
-JOIN retail.calender c
-	ON s.order_date = c.date
-GROUP BY day_name
 ORDER BY total_sales DESC;
 
 SELECT 
 	discount,
 	COUNT(*) AS count
-FROM retail.sales
+FROM retail.orders
 WHERE discount <> 0.00
 GROUP BY discount
 ORDER BY count DESC;
@@ -199,8 +169,8 @@ SELECT
 	discount,
 	SUM(sales) AS total_sales,
 	SUM(profit) AS total_profits,
-	SUM(profit) / SUM(sales) AS profit_ratio
-FROM retail.sales
+	ROUND(SUM(profit) / SUM(sales), 2) AS profit_ratio
+FROM retail.orders
 WHERE discount <> 0.00
 GROUP BY discount
 ORDER BY total_sales DESC;
