@@ -119,6 +119,48 @@ FROM product_combiantion_cte
 GROUP BY CONVERT(VARCHAR(MAX), p1_name), p1_id, CONVERT(VARCHAR(MAX), p2_name), p2_id
 HAVING count(*) > 1;
 
+WITH test_cte AS (
+	SELECT TOP 10
+		CONVERT(VARCHAR(MAX), product_name) AS product_name,
+		s.product_id,
+		SUM(sales) AS total_sales
+	FROM retail.sales s
+	JOIN retail.products p
+		ON s.product_id = p.product_id
+	--WHERE order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
+		--AND discount = 0.00
+	GROUP BY 
+		CONVERT(VARCHAR(MAX), product_name),
+		s.product_id
+)
+SELECT *
+FROM test_cte t
+LEFT JOIN #product_combination_temp p
+	ON t.product_id = p.p1_id OR t.product_id = p.p2_id
+
+
+WITH unsold_products_cte AS (
+	SELECT p.product_id
+	FROM retail.products p
+	LEFT JOIN retail.sales s
+		ON p.product_id = s.product_id
+	AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
+WHERE s.product_id IS NULL
+),
+top_30_unsold_products_cte AS (
+	SELECT TOP 30 
+		product_id,
+		COUNT(*) AS count
+	FROM retail.sales s
+	WHERE product_id IN (SELECT product_id FROM unsold_products_cte)
+	GROUP BY s.product_id
+)
+SELECT *
+FROM top_30_unsold_products_cte t
+LEFT JOIN #product_combination_temp p
+	ON t.product_id = p.p1_id OR t.product_id = p.p2_id
+
+
 -- needs work for production combination with top 30 or top 10
 
 -- optins
