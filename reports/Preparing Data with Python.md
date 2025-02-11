@@ -41,7 +41,7 @@ orders['Location ID'] = orders['State Code'] + '-' + orders['City'] + '-' + orde
 
 customers = orders[['Customer ID', 'Customer Name', 'Segment']]
 products = orders[['Product ID', 'Category', 'Sub-Category', 'Product Name']]
-geographic_locations = orders[['Location ID', 'Country', 'City', 'State', 'State Code', 'Postal Code', 'Region']]
+geographic_locations = orders[['Location ID', 'Country', 'State', 'State Code', 'City', 'Postal Code', 'Region']]
 
 # Finish the orders table.
 orders = orders[['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
