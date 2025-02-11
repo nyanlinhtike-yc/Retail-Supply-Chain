@@ -1,6 +1,6 @@
 # Preparing Data with Python
 
-We *normalized* the raw dataset by organizing it into multiple tables, ensuring a more structured and efficient database design. Additionally, we added specific columns to establish relationships between these tables.
+We **normalized** the raw dataset by organizing it into multiple tables, ensuring a more structured and efficient database design. Additionally, we added specific columns to establish relationships between these tables.
 
 ```Python
 import pandas as pd
@@ -128,3 +128,7 @@ customers.csv successfully exported.
 products.csv successfully exported.  
 geographic_locations.csv successfully exported.  
 All exports are completed.*
+
+[Here] we go to the next step.
+
+[Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Setting%20Up%20SQL%20Database.md
