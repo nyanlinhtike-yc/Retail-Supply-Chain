@@ -1,6 +1,6 @@
 # Preparing Data with Python
 
-We **normalized** the raw dataset by organizing it into multiple tables, ensuring a more structured and efficient database design. Additionally, we added specific columns to establish relationships between these tables.
+We **normalizes** the raw dataset by organizing it into multiple tables, ensuring a more structured and efficient database design. Additionally, we add specific columns to establish relationships between these tables.
 
 ```Python
 import pandas as pd
@@ -17,7 +17,7 @@ orders.columns
        'Quantity', 'Discount', 'Profit'],
       dtype='object')*
 
-We created `State Code` column combining with others to create unique id for each location so that we can establish a relationship between `orders` table and `geographic_locations` table.
+We create `State Code` column combining with others to create unique id for each location so that we can establish a relationship between `orders` table and `geographic_locations` table.
 
 ```Python
 state_abbr = {
@@ -49,9 +49,9 @@ orders = orders[['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
        'Quantity', 'Discount', 'Profit']]
 ```
 
-We removed duplicate values to ensure each table has a unique ID column and verified that no duplicates remain.
+We remove duplicate values to ensure each table has a unique ID column and ensure that no duplicates remain.
 
-*For `customers` table.*
+For `customers` table.
 
 ```Python
 # Drop duplicated values to create many to one relationship with orders table.
@@ -67,7 +67,7 @@ customers[customers.duplicated()].any()
 | *Customer Name*  | *False*         |
 | *Segment*       | *False*        |
 
-*For `products` table.*
+For `products` table.
 
 ```Python
 products = products.drop_duplicates(subset='Product ID')
@@ -81,7 +81,7 @@ products[products.duplicated()].any()
 |*Sub-Category*    | *False*         |
 |*Product Name*    | *False*         |
 
-*For `geographic_locations` table.*
+For `geographic_locations` table.
 
 ```Python
 geographic_locations = geographic_locations.drop_duplicates(subset='Location ID')
@@ -100,7 +100,7 @@ geographic_locations[geographic_locations.duplicated()].any()
 
 ---
 
-At this stage, we were ready to **export** all data tables to CSV files. To improve convenience, we created a function for exporting tables.
+At this stage, we are ready to **export** all data tables to CSV files. To improve convenience, we create a function for exporting tables.
 
 ```Python
 import os
@@ -129,6 +129,4 @@ products.csv successfully exported.
 geographic_locations.csv successfully exported.  
 All exports are completed.*
 
-[Here] we go to the next step.
-
-[Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Setting%20Up%20SQL%20Database.md
+[Here](reports/Setting%20Up%20SQL%20Database.md) we go to the next step.
