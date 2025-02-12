@@ -243,7 +243,7 @@ ORDER BY total_sales DESC;
 
 First, We are going to create temporary table for best selling products.
 
-> *"In this case, we defined the best-selling products based on the top 20th percentile of total sales and total quantity that are filtering out low-revenue, high-quantity items and high-revenue, low-quantity items. However, in a real-world scenario, the definition of best-selling products can vary depending on business objectives and priorities."*
+> *"In this case, we defined the best-selling products based on the top 20th percentile of total sales and total quantity that are filtering out low-revenue, high-quantity items and high-revenue, low-quantity items. However, in a real-world scenario, the definition of best-selling products can depend on business objectives."*
 
 ```SQL
 DROP TABLE IF EXISTS #best_seller_products;
