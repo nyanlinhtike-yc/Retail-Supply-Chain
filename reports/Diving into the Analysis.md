@@ -91,7 +91,7 @@ Therefore, we are analyzing the top 10 trending products based on sales from the
 SELECT TOP 10
 	CONVERT(VARCHAR(MAX), product_name) AS product_name,
 	o.product_id,
-	SUM(sales) AS total_sales
+	SUM(sales) AS total_sales --INTO #top_10_products -- For future use
 FROM retail.orders o
 JOIN retail.products p
 	ON o.product_id = p.product_id
@@ -115,20 +115,291 @@ WITH unsold_products_cte AS (
 	FROM retail.products p
 	LEFT JOIN retail.orders o
 		ON p.product_id = o.product_id
-	AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
-WHERE o.product_id IS NULL
+			AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
+	WHERE o.product_id IS NULL
 )
 SELECT TOP 30 
-	product_id,
-	COUNT(*) AS count
-FROM retail.orders
-WHERE product_id IN (SELECT product_id FROM unsold_products_cte)
-GROUP BY product_id
-ORDER BY count DESC;
+	o.product_id,
+	CONVERT(VARCHAR(MAX), p.product_name) AS product_name,
+	COUNT(*) AS total_counts --INTO #top_30_less_unsold_products -- for future use.
+FROM retail.orders o
+JOIN retail.products p
+	ON o.product_id = p.product_id
+WHERE o.product_id IN (
+	SELECT product_id 
+	FROM unsold_products_cte
+	)
+GROUP BY 
+	o.product_id,
+	CONVERT(VARCHAR(MAX), p.product_name)
+ORDER BY total_counts DESC;
 ```
 
 *Due to the length of the result, only a portion is displayed.*
 
 <img alt="a5" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a5.png">
 
+We are analyzing product combinations to understand purchasing patterns, such as which items are frequently bought together.
 
+First, we need to create `product_combination_temp` temporary table to future calculations.
+
+```SQL
+WITH product_name_cte AS (
+	SELECT
+		order_id,
+		o.product_id,
+		product_name
+	FROM retail.orders o
+	JOIN retail.products p
+		ON o.product_id = p.product_id
+),
+product_combiantion_cte AS (
+	SELECT 
+		c1.order_id,
+		c1.product_id AS p1_id,
+		c1.product_name AS p1_name,
+		c2.product_id AS p2_id,
+		c2.product_name AS p2_name
+	FROM product_name_cte c1
+	JOIN product_name_cte c2 
+		ON c1.order_id = c2.order_id
+			AND c1.product_id < c2.product_id
+	WHERE c1.product_id <> c2.product_id
+)
+
+SELECT	 
+	CONVERT(VARCHAR(MAX), p1_name) AS p1_name,
+	p1_id,
+	CONVERT(VARCHAR(MAX), p2_name) AS p2_name,
+	p2_id,
+	COUNT(*) AS counts INTO #product_combination_temp
+FROM product_combiantion_cte
+GROUP BY CONVERT(VARCHAR(MAX), p1_name), p1_id, CONVERT(VARCHAR(MAX), p2_name), p2_id
+HAVING count(*) > 1;
+```
+
+Products from the top 10 bestsellers that were purchased together with other items.
+
+```SQL
+SELECT	
+	p1_name,
+	p1_id,
+	p2_name,
+	p2_id,
+	counts
+FROM #top_10_products t
+LEFT JOIN #product_combination_temp p
+	ON t.product_id = p.p1_id OR t.product_id = p.p2_id
+WHERE p1_id IS NOT NULL;
+```
+
+<img alt="a6" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a6.png">
+
+Products from the top 30 less frequently sold items that were purchased together with other items.
+
+```SQL
+SELECT 
+	p1_name,
+	p1_id,
+	p2_name,
+	p2_id,
+	counts
+FROM #top_30_less_unsold_products t
+LEFT JOIN #product_combination_temp p
+	ON t.product_id = p.p1_id OR t.product_id = p.p2_id
+WHERE p1_id IS NOT NULL;
+```
+
+<img alt="a7" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a7.png">
+
+We need to consider that some high-selling products are seasonal, such as summer and winter items. However, since there are no explicit seasonal categories assigned to each product, we are analyzing the best-selling products based on January sales. Our goal is to align trending products, seasonal products, and least frequently sold products for a balanced discount strategy.
+
+*While a full seasonal analysis requires multi-year data and deeper segmentation, this project demonstrates a simplified approach that can be expanded further.*
+
+```SQL
+SELECT TOP 10
+	CONVERT(VARCHAR(MAX), product_name) AS product_name,
+	o.product_id,
+	SUM(sales) AS total_sales
+FROM retail.orders o
+JOIN retail.products p
+	ON o.product_id = p.product_id
+JOIN retail.calender c
+	ON o.order_date = c.date
+WHERE year = 2017 
+	AND month = 1
+	AND discount = 0.00
+GROUP BY 
+	CONVERT(VARCHAR(MAX), product_name),
+	o.product_id
+ORDER BY total_sales DESC; 
+```
+
+<img alt="a8" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a8.png">
+
+---
+
+## Discount Optimization
+
+First, We are going to create temporary table for best selling products.
+
+> *"In this case, we defined the best-selling products based on the top 20th percentile of total sales and total quantity that are filtering out low-revenue, high-quantity items and high-revenue, low-quantity items. However, in a real-world scenario, the definition of best-selling products can vary depending on business objectives and priorities."*
+
+```SQL
+DROP TABLE IF EXISTS #best_seller_products;
+WITH sales_summary AS (
+    SELECT 
+        product_id, 
+        SUM(sales) AS total_revenue, 
+        SUM(quantity) AS total_quantity
+    FROM retail.orders
+    GROUP BY product_id
+), thresholds AS (
+    SELECT DISTINCT
+        PERCENTILE_CONT(0.2) WITHIN GROUP (ORDER BY total_quantity DESC) OVER() AS quantity,
+        PERCENTILE_CONT(0.2) WITHIN GROUP (ORDER BY total_revenue DESC) OVER() AS revenue
+    FROM sales_summary
+), categorized_products AS (
+    SELECT 
+        ss.product_id, 
+        ss.total_revenue, 
+        ss.total_quantity,
+        CASE 
+            WHEN ss.total_quantity > t.quantity --(SELECT median_quantity FROM thresholds) 
+                 AND ss.total_revenue > t.revenue
+                 THEN 'Best Seller Product'
+            ELSE 'Normal Product'
+        END AS product_category
+    FROM sales_summary ss
+	CROSS JOIN thresholds t
+)
+SELECT DISTINCT product_id INTO #best_seller_products
+FROM categorized_products 
+WHERE product_category = 'Best Seller Product';
+```
+
+We are comparing the top 10 products for the January with best selling products of all times.
+
+```SQL
+with top_10_best_selling_jan as (
+	SELECT TOP 10
+		CONVERT(VARCHAR(MAX), product_name) AS product_name,
+		o.product_id,
+		discount,
+		SUM(sales) AS total_sales,
+		SUM(quantity) AS total_qty,
+		SUM(profit) AS total_profits
+	FROM retail.orders o
+	JOIN retail.products p
+		ON o.product_id = p.product_id
+	JOIN retail.calender c
+		ON o.order_date = c.date
+	WHERE year = 2017 
+		AND month = 1
+	GROUP BY 
+		CONVERT(VARCHAR(MAX), product_name),
+		o.product_id,
+		discount
+	ORDER BY total_sales DESC
+)
+
+SELECT 
+    product_name,
+	t.product_id, 
+	discount, 
+	total_sales, 
+	total_qty,
+	total_profits,
+	s.product_id AS best_selling_product_id
+FROM top_10_best_selling_jan t 
+LEFT join #best_seller_products s 
+	ON t.product_id = s.product_id;
+```
+
+*This is a intermediate step to get better understand on the how our logic works.*
+
+<img alt="a9" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a9.png">
+
+We are now optimizing discounts on high-demand products by reducing them to offer discounts strategically and maximize revenue.
+
+> *"This is a simplified approach that can be further expanded using a real-world dataset."*
+
+```SQL
+with top_10_best_selling_jan as (
+	SELECT TOP 10
+		CONVERT(VARCHAR(MAX), product_name) AS product_name,
+		o.product_id,
+		discount,
+		SUM(sales) AS total_sales,
+		SUM(quantity) AS total_qty,
+		SUM(profit) AS total_profits
+	FROM retail.orders o
+	JOIN retail.products p
+		ON o.product_id = p.product_id
+	JOIN retail.calender c
+		ON o.order_date = c.date
+	WHERE year = 2017 
+		AND month = 1
+	GROUP BY 
+		CONVERT(VARCHAR(MAX), product_name),
+		o.product_id,
+		discount
+	ORDER BY total_sales DESC
+)
+
+SELECT 
+	product_name,
+	t.product_id, 
+	discount, 
+	total_sales, 
+	total_qty,
+	total_profits,
+	s.product_id AS best_selling_product_id,
+	CASE WHEN discount = 0.0 THEN total_profits ELSE ((total_sales / (1 - discount)) - total_profits) - total_sales END AS profit_without_discounts
+FROM top_10_best_selling_jan t 
+LEFT join #best_seller_products s 
+	ON t.product_id = s.product_id
+WHERE discount <> 0.0 
+	AND s.product_id IS NOT NULL;
+```
+
+We also want to know total sales and profit ratio based on each discount.
+
+```SQL
+SELECT 
+	discount,
+	COUNT(*) AS dis_counts,
+	SUM(sales) AS total_sales,
+	SUM(profit) AS total_profits,
+	ROUND(SUM(profit) * 100.0 / SUM(sales), 2) AS profit_ratio
+FROM retail.orders
+WHERE YEAR(order_date) = 2017 
+	AND MONTH(order_date) = 1
+GROUP BY discount
+ORDER BY total_sales DESC;
+```
+
+<img alt="a10" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a10.png">
+
+Discounted sales contribute to 41% of the total revenue.
+
+```SQL
+SELECT 
+	SUM(CASE WHEN discount = 0.0 THEN sales END) AS total_sales_without_dis,
+	SUM(CASE WHEN discount <> 0.0 THEN sales END) AS total_sals_with_dis,
+	ROUND(SUM(CASE WHEN discount <> 0.0 THEN sales END) * 100.0 / SUM(sales), 2) AS sales_with_dis_percent
+FROM retail.orders
+WHERE YEAR(order_date) = 2017 
+	AND MONTH(order_date) = 1;
+```
+
+<img alt="a11" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a11.png">
+
+
+If you are looking for key insights and recommendations from this analysis, here are the main takeaways:
+
+* [Key Insights]
+* [Recommendations]
+
+[Key Insights]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#key-insights-
+[Recommendations]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#recomemdations-
