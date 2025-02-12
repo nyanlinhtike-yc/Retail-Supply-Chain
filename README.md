@@ -8,9 +8,9 @@ A data analysis project primarily utilizing **SQL** and **Python** for the data 
 2. [Business Description](#business-description-)
 3. [Data Information](#data-information-)
 4. [Database Schema](#database-schema-)
-5. [Tools & Technologies](#tools-&-technologies-)
-6. [Methodology](#methodology-)
-7. [Our Approach: A Step-by-Step Guide](#our-approach:-a-step-by-step-gruide-)
+5. [Tools & Technologies](#tools--techanologies-️)
+6. [Methodology](#methodology-️)
+7. [Our Approach: A Step-by-Step Guide](#our-approach-a-step-by-step-guide-)
 8. [Key Insights](#key-insights-)
 9. [Recommendations](#recommendations-)
 10. [Contact](#contact-)
@@ -23,7 +23,7 @@ This project focuses on **analyzing product segmentation** and **optimizing disc
 
 **Retail Sales** distributes a diverse ragne of products such as Technology, Funiture and Office Supplies, across the country. The company focuses on delivering high-quality products to meet customer demands while optimizing sales strategies. By leveraging data-driven insights, **Retail Sales** aim to enhance operational efficiency and improve customer satisfaction.
 
-<img alt="retail_sales" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/retail%20sales.webp">
+![retail sales](images/retail%20sales.webp)
 
 ## Data Information 📊
 
@@ -39,7 +39,7 @@ These datasets provide detailed information on retail orders, including sales pe
 
 ## Database Schema 📝
 
-<img alt="schema" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/schema.png">
+![schema](images/schema.png)
 
 ## Tools & Techanologies ⚒️
 
@@ -72,10 +72,10 @@ These datasets provide detailed information on retail orders, including sales pe
 ## Our Approach: A Step-by-Step Guide 🪜
 
 1. [Preparing Data with Python](reports/Preparing%20Data%20with%20Python.md)
-2. [Setting Up SQL Database]
-3. [Validating Data Integrity]
-4. [Data Exploration]
-5. [Diving into the Analysis]
+2. [Setting Up SQL Database](reports/Setting%20Up%20SQL%20Database.md)
+3. [Validating Data Integrity](reports/Validating%20Data%20Integrity.md)
+4. [Data Exploration](reports/Data%20Exploration.md)
+5. [Diving into the Analysis](reports/Diving%20into%20the%20Analysis.md)
 
 ## Key Insights 🔍
 
@@ -90,7 +90,6 @@ These datasets provide detailed information on retail orders, including sales pe
 * Leverage product pairings by offering discounts on items frequently purchased together to optimize revenue opportunities.
 * Minimize discount offerings on high-demand products to protect profit margins.
 
-
 ## Contact 📩
 
 📧 Email: <nyanlinhtike.nlh@gmail.com>  
@@ -100,8 +99,3 @@ These datasets provide detailed information on retail orders, including sales pe
 > "*This is a personal project portfolio primarily focused on SQL*".
 
 Dataset Link: <https://www.kaggle.com/datasets/shandeep777/retail-supply-chain-sales-dataset>
-
-[Setting Up SQL Database]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Setting%20Up%20SQL%20Database.md
-[Validating Data Integrity]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Validating%20Data%20Integrity.md
-[Data Exploration]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Data%20Exploration.md
-[Diving into the Analysis]: (reports/Diving%20into%20the%20Analysis.md)
