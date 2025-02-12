@@ -129,4 +129,4 @@ products.csv successfully exported.
 geographic_locations.csv successfully exported.  
 All exports are completed.*
 
-[Here](reports/Setting%20Up%20SQL%20Database.md) we go to the next step.
+[Here](./Setting%20Up%20SQL%20Database.md) we go to the next step.
