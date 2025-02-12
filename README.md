@@ -4,16 +4,16 @@ A data analysis project primarily utilizing **SQL** and **Python** for the data 
 
 ## Table of Contents 📖
 
-1. [Project Overview]
-2. [Business Description]
-3. [Data Information]
-4. [Database Schema]
-5. [Tools & Technologies]
-6. [Methodology]
-7. [Our Approach: A Step-by-Step Guide]
-8. [Key Insights]
-9. [Recommendations]
-10. [Contact]
+1. [Project Overview](#project-overview-)
+2. [Business Description](#business-description-)
+3. [Data Information](#data-information-)
+4. [Database Schema](#database-schema-)
+5. [Tools & Technologies](#tools-&-technologies-)
+6. [Methodology](#methodology-)
+7. [Our Approach: A Step-by-Step Guide](#our-approach:-a-step-by-step-gruide-)
+8. [Key Insights](#key-insights-)
+9. [Recommendations](#recommendations-)
+10. [Contact](#contact-)
 
 ## Project Overview 📌
 
@@ -71,7 +71,7 @@ These datasets provide detailed information on retail orders, including sales pe
 
 ## Our Approach: A Step-by-Step Guide 🪜
 
-1. [Preparing Data with Python]
+1. [Preparing Data with Python](reports/Preparing%20Data%20with%20Python.md)
 2. [Setting Up SQL Database]
 3. [Validating Data Integrity]
 4. [Data Exploration]
@@ -94,33 +94,14 @@ These datasets provide detailed information on retail orders, including sales pe
 ## Contact 📩
 
 📧 Email: <nyanlinhtike.nlh@gmail.com>  
-🌐 linkedin: [Nyan Lin Htike]
-
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
+🌐 linkedin: [Nyan Lin Htike](https://www.linkedin.com/in/nyan-lin-htike-45b12a166/)
 
 > [!NOTE]
 > "*This is a personal project portfolio primarily focused on SQL*".
 
 Dataset Link: <https://www.kaggle.com/datasets/shandeep777/retail-supply-chain-sales-dataset>
 
-[Project Overview]: (#project-overview-)
-[Business Description]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#business-description-
-[Data Information]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#data-information-
-[Database Schema]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#database-schema-
-[Tools & Technologies]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#tools--techanologies-%EF%B8%8F
-[Methodology]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#methodology-%EF%B8%8F
-[Our Approach: A Step-by-Step Guide]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#our-approach-a-step-by-step-guide-
-[Key Insights]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#key-insights-
-[Recommendations]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#recomemdations-
-[Contact]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#Contact-
-[Preparing Data with Python]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Preparing%20Data%20with%20Python.md
 [Setting Up SQL Database]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Setting%20Up%20SQL%20Database.md
 [Validating Data Integrity]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Validating%20Data%20Integrity.md
 [Data Exploration]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Data%20Exploration.md
 [Diving into the Analysis]: (reports/Diving%20into%20the%20Analysis.md)
-[Nyan Lin Htike]: https://www.linkedin.com/in/nyan-lin-htike-45b12a166/
-
-> "*This is a personal project portfolio primarily focused on SQL*".
-
-Dataset Link: https://www.kaggle.com/datasets/shandeep777/retail-supply-chain-sales-dataset
