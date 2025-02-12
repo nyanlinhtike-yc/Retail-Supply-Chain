@@ -13,10 +13,11 @@ A data analysis project primarily utilizing **SQL** and **Python** for the data 
 7. [Our Approach: A Step-by-Step Guide]
 8. [Key Insights]
 9. [Recommendations]
+10. [Contact]
 
 ## Project Overview 📌
 
-This project focuses on **analyzing product segmentation** and **optimizing discounts** for the upcoming seasons to maximize sales and revenue.
+This project focuses on **analyzing product segmentation** and **optimizing discounts** for the upcoming seasons especially on January to maximize sales and revenue.
 
 ## Business Description 💼
 
@@ -26,7 +27,7 @@ This project focuses on **analyzing product segmentation** and **optimizing disc
 
 ## Data Information 📊
 
-These datasets provide detailed information on retail orders, including sales performance, customer details, products details, geographic locations and shipment logistics. It is accompanied by a calendar reference table to enable time-series analysis and other temporal insights.
+These datasets provide detailed information on retail orders, including sales performance, customer details, products details, geographic locations and shipment logistics. It is accompanied by a calendar reference table to enable time-series analysis and other insights.
 
 | **Table Name**         | **Description**                                               |
 |--------------------|-----------------------------------------------------------|
@@ -43,10 +44,30 @@ These datasets provide detailed information on retail orders, including sales pe
 ## Tools & Techanologies ⚒️
 
 * **SQL** (Data Extraction & Analysis)
-* **Python** (Data Cleaning)
+* **Python** (Data Cleaning & Preprocessing)
 * **Power BI** (Visualization)
 
 ## Methodology ⚖️
+
+1. Data cleaning and Preprocessing
+    * Normalize the raw dataset for better structure.
+    * Handle duplicate values and outliers.
+
+2. Data Exploration
+    * Gain overview of the sales performance.
+    * Extract initial insights from the data.
+
+3. Sales Trend
+    * Analysis the current sales situation.
+    * Find the optimal day to launch a discount event.
+
+4. Product Segmentation
+    * Identify current trending products.
+    * Analyst product combinations to optimize revenue opportunites
+
+5. Discount Optimization
+    * Determine the optimal discount percentage to maximize revenue.
+    * Estimate the profit without discounts.
 
 ## Our Approach: A Step-by-Step Guide 🪜
 
@@ -58,9 +79,32 @@ These datasets provide detailed information on retail orders, including sales pe
 
 ## Key Insights 🔍
 
-## Recomemdations 📄
+* The sales trend indicates a **healthy growth** pattern; however, there is a consistent slight **decline in Q2** each year.
+* **Friday** and **Sunday** are the most effective days to launch a discount event, while Monday maintains steady sales, and Thursday acts as a sales booster for the weekend.
+* Discounted sales contribute to **41%** of total revenue, yet a significant portion of them show **negative** profit margins.
 
-[Project Overview]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#project-overview-
+## Recommendations 📄
+
+* Pair high-selling products with less frequently sold items in discount events to maximize revenue.
+* Avoid including the slowest-selling products in discount campaigns on historically low sales month.
+* Leverage product pairings by offering discounts on items frequently purchased together to optimize revenue opportunities.
+* Minimize discount offerings on high-demand products to protect profit margins.
+
+
+## Contact 📩
+
+📧 Email: <nyanlinhtike.nlh@gmail.com>  
+🌐 linkedin: [Nyan Lin Htike]
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!NOTE]
+> "*This is a personal project portfolio primarily focused on SQL*".
+
+Dataset Link: <https://www.kaggle.com/datasets/shandeep777/retail-supply-chain-sales-dataset>
+
+[Project Overview]: (#project-overview-)
 [Business Description]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#business-description-
 [Data Information]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#data-information-
 [Database Schema]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main#database-schema-
@@ -69,11 +113,13 @@ These datasets provide detailed information on retail orders, including sales pe
 [Our Approach: A Step-by-Step Guide]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#our-approach-a-step-by-step-guide-
 [Key Insights]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#key-insights-
 [Recommendations]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#recomemdations-
+[Contact]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#Contact-
 [Preparing Data with Python]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Preparing%20Data%20with%20Python.md
 [Setting Up SQL Database]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Setting%20Up%20SQL%20Database.md
 [Validating Data Integrity]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Validating%20Data%20Integrity.md
 [Data Exploration]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Data%20Exploration.md
-[Diving into the Analysis]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Diving%20into%20the%20Analysis.md
+[Diving into the Analysis]: (reports/Diving%20into%20the%20Analysis.md)
+[Nyan Lin Htike]: https://www.linkedin.com/in/nyan-lin-htike-45b12a166/
 
 > "*This is a personal project portfolio primarily focused on SQL*".
 
