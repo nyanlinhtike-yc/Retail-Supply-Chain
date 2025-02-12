@@ -1,71 +1,71 @@
 # Data Exploration
 
-We are exploring the data before analyzing it. This is a good practice for data analysts.  
+We explore the data before analyzing it. This is a good practice for us, data analysts.  
 
-> *"Since this dataset was not explicitly provided by a data engineer or supervisor for a specific analysis, our first step is to check the time range of the data to make sure it matches what we need for our analysis."*
+> *"Since this dataset is not explicitly provided by a data engineer or supervisor for a specific analysis, our first step is to check the time frame of the data to make sure it matches what we need for our analysis."*
 
-```SQL
+```sql
 SELECT
 	MIN(order_date) AS min_order_date,
 	MAX(order_date) AS max_order_date
 FROM retail.orders;
 ```
 
-<img alt="d1" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d1.png">
+![d1](../images/d1.png)
 
 **How many unique customers are there in the `customers` table?**
 
-```SQL
+```sql
 SELECT
 	COUNT(DISTINCT customer_id) AS unique_customers
 FROM retail.customers;
 ```
 
-<img alt="d2" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d2.png">
+![d2](../images/d2.png)
 
 **How many unique products are there in the `products` table?**
 
-```SQL
+```sql
 SELECT
 	COUNT(DISTINCT product_id) AS unique_products
 FROM retail.products;
 ```
 
-<img alt="d3" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d3.png">
+![d3](../images/d3.png)
 
 **What shipping methods are used for nationwide product distribution?**
 
-```SQL
+```sql
 SELECT DISTINCT
 	ship_mode 
 FROM retail.orders;
 ```
 
-<img alt="d4" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d4.png">
+![d4](../images/d4.png)
 
 **What are the company's customer segments?**
 
-```SQL
+```sql
 SELECT DISTINCT	
 	segment
 FROM retail.customers;
 ```
 
-<img alt="d5" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d5.png">
+![d5](../images/d5.png)
 
 **What product categories do they offer?**
 
-```SQL
+```sql
 SELECT DISTINCT
 	category
 FROM retail.products;
 ```
 
-<img alt="d6" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d6.png">
+![d6](../images/d6.png)
 
 **How many product units were sold, and how much revenue was generated? How much profit was earned**?
 
-```SQL
+```sql
 SELECT 
 	SUM(sales) AS revenue,
 	SUM(quantity) AS total_qty,
@@ -73,11 +73,11 @@ SELECT
 FROM retail.orders;
 ```
 
-<img alt="d7" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d7.png">
+![d7](../images/d7.png)
 
 **How many sales were generated for each customer segment?**
 
-```SQL
+```sql
 SELECT
 	segment,
 	SUM(sales) AS total_sales
@@ -88,11 +88,11 @@ GROUP BY segment
 ORDER BY total_sales DESC;
 ```
 
-<img alt="d8" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d8.png">
+![d8](../images/d8.png)
 
 **What is the total sales volumn for each product category and sub-category?**
 
-```SQL
+```sql
 SELECT
 	category,
 	sub_category,
@@ -106,11 +106,11 @@ GROUP BY
 ORDER BY total_sales DESC;
 ```
 
-<img alt="d9" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d9.png">
+![d9](../images/d9.png)
 
 **How much sales were generated for each state?**
 
-```SQL
+```sql
 SELECT
 	state,
 	SUM(sales) AS total_sales
@@ -121,13 +121,13 @@ GROUP BY state
 ORDER BY total_sales DESC;
 ```
 
-<img alt="d10" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d10.png">
+![d10](../images/d10.png)
 
-**What are the total sales, total profits and their profit ratio for each shipping methods**? 
+**What are the total sales, total profits and their profit ratio for each shipping methods**?
 
-> *"We are only exploring shipping methods at a high level and will not conduct further analysis on this subject, as it deviates from our main objective."*
+> *"We only explore shipping methods at a high level and will not conduct further analysis on this subject, as it deviates from our main objective."*
 
-```SQL
+```sql
 SELECT
 	ship_mode,
 	SUM(sales) AS total_sales,
@@ -138,11 +138,11 @@ GROUP BY ship_mode
 ORDER BY total_sales DESC;
 ```
 
-<img alt="d11" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d11.png">
+![d11](../images/d11.png)
 
 **What is the discount distribution for all products?**
 
-```SQL
+```sql
 SELECT 
 	discount,
 	COUNT(*) AS count
@@ -152,11 +152,12 @@ GROUP BY discount
 ORDER BY count DESC;
 ```
 
-<img alt="d12" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d12.png">
+![d12](../images/d12.png)
 
-> *"We are conducting a high-level exploration of discount values. Further analysis on this topic will be performed in the deep analysis phase."*
+> [!NOTE]
+> *"We conduct a high-level exploration of discount values. Further analysis on this topic will be performed in the deep analysis phase."*
 
-```SQL
+```sql
 SELECT 
 	discount,
 	SUM(sales) AS total_sales,
@@ -168,10 +169,9 @@ GROUP BY discount
 ORDER BY total_sales DESC;
 ```
 
-<img alt="d13" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/d13.png">
+![d13](../images/d13.png)
 
+> [!NOTE]
 > *"Most discounted sales show a **negative** profit value, which is noteworthy. Further analysis is needed to understand this trend."*
 
-[Here] we go to the next step.
-
-[Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Diving%20into%20the%20Analysis.md
+[Here](./Diving%20into%20the%20Analysis.md) we go to the next step.

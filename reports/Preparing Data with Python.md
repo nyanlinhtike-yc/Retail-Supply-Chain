@@ -2,7 +2,7 @@
 
 We **normalizes** the raw dataset by organizing it into multiple tables, ensuring a more structured and efficient database design. Additionally, we add specific columns to establish relationships between these tables.
 
-```Python
+```python
 import pandas as pd
 
 orders = pd.read_csv(r'N:\SQL\Retail Supply Chain\datasets\raw_dataset.csv', encoding='windows-1254')
@@ -19,7 +19,7 @@ orders.columns
 
 We create `State Code` column combining with others to create unique id for each location so that we can establish a relationship between `orders` table and `geographic_locations` table.
 
-```Python
+```python
 state_abbr = {
     'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA',
     'Colorado': 'CO', 'Connecticut': 'CT', 'Delaware': 'DE', 'Florida': 'FL', 'Georgia': 'GA',
@@ -53,7 +53,7 @@ We remove duplicate values to ensure each table has a unique ID column and ensur
 
 For `customers` table.
 
-```Python
+```python
 # Drop duplicated values to create many to one relationship with orders table.
 customers = customers.drop_duplicates(subset='Customer ID')
 
@@ -69,7 +69,7 @@ customers[customers.duplicated()].any()
 
 For `products` table.
 
-```Python
+```python
 products = products.drop_duplicates(subset='Product ID')
 products[products.duplicated()].any()
 ```
@@ -83,7 +83,7 @@ products[products.duplicated()].any()
 
 For `geographic_locations` table.
 
-```Python
+```python
 geographic_locations = geographic_locations.drop_duplicates(subset='Location ID')
 geographic_locations[geographic_locations.duplicated()].any()
 ````
@@ -102,7 +102,7 @@ geographic_locations[geographic_locations.duplicated()].any()
 
 At this stage, we are ready to **export** all data tables to CSV files. To improve convenience, we create a function for exporting tables.
 
-```Python
+```python
 import os
 
 def export_csv(tables_dict):

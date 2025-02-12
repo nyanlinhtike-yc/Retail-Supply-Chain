@@ -2,7 +2,7 @@
 
 First of all, We create a schema for better manage for tables and improve the structure of the database.
 
-```SQL
+```sql
 CREATE SCHEMA retail;
 GO
 ```
@@ -13,7 +13,7 @@ GO
 
 This table stores information about customers, including their unique identifiers, names, and market segments.
 
-```SQL
+```sql
 CREATE TABLE retail.customers (
 	customer_id VARCHAR(8) PRIMARY KEY,
 	customer_name VARCHAR(30),
@@ -25,7 +25,7 @@ CREATE TABLE retail.customers (
 
 This table holds product details, including category, sub-category and their names.
 
-```SQL
+```sql
 CREATE TABLE retail.products (
 	product_id VARCHAR(15) PRIMARY KEY,
 	category VARCHAR(15),
@@ -38,7 +38,7 @@ CREATE TABLE retail.products (
 
 This table stores location-based data, enabling regional sales analysis and customer distribution insights.
 
-```SQL
+```sql
 CREATE TABLE retail.geographic_locations (
 	location_id VARCHAR(30) PRIMARY KEY,
 	country VARCHAR(15),
@@ -54,7 +54,7 @@ CREATE TABLE retail.geographic_locations (
 
 This table stores date-related information to support sales analysis and trend identification.
 
-```SQL
+```sql
 CREATE TABLE retail.calender (
 	date DATE PRIMARY KEY,
 	year SMALLINT NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE retail.calender (
 
 This table stores order details, tracking customer purchases, logistics and sales performance. It is essential for sales analysis and revenue tracking.
 
-```SQL
+```sql
 CREATE TABLE retail.orders (
 	row_id INT NOT NULL,
 	order_id CHAR(14) NOT NULL,
@@ -100,9 +100,9 @@ CREATE TABLE retail.orders (
 
 ## Creating a Stored Procedure
 
-We are also creating a stored procedure to automate repeated tasks for importing CSV files.
+We create a stored procedure to automate repeated tasks for importing CSV files into the tables.
 
-```SQL
+```sql
 CREATE PROCEDURE retail.InsertData
 	@TableName VARCHAR(255),
 	@FileName VARCHAR(255)
@@ -123,9 +123,9 @@ BEGIN
 END;
 ```
 
-Now, we are importing all CSV files into the existing tables.
+Now, we import all CSV files into the existing tables.
 
-```SQL
+```sql
 EXEC retail.InsertData 'customers', 'customers';
 EXEC retail.InsertData 'products', 'products';
 EXEC retail.InsertData 'geographic_locations', 'geographic_locations';
@@ -133,8 +133,6 @@ EXEC retail.InsertData 'calender', 'calender';
 EXEC retail.InsertData 'orders', 'orders';
 ```
 
-<img alt="s1" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/s1.png">
+![s1](../images/s1.png)
 
-[Here] we go to the next step.
-
-[Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Validating%20Data%20Integrity.md
+[Here](./Data%20Exploration.md) we go to the next step.
