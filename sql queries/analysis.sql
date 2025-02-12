@@ -10,9 +10,9 @@ SELECT
 	month,
 	SUM(sales) AS total_sales,
 	SUM(profit) AS total_profits
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.calender c
-	ON s.order_date = c.date
+	ON o.order_date = c.date
 GROUP BY
 	year,
 	quarter_q,
@@ -21,16 +21,16 @@ GROUP BY
 ORDER BY total_sales DESC;
 
 WITH latest_order_date_cte AS (
-	SELECT MAX(order_date) AS latest_order_date FROM retail.sales
+	SELECT MAX(order_date) AS latest_order_date FROM retail.orders
 )
 SELECT
 	day_name,
 	day_of_week,
 	SUM(CASE WHEN order_date BETWEEN DATEADD(DAY, -90, l.latest_order_date) AND DATEADD(DAY, -1, l.latest_order_date) THEN sales END) AS previous_90_sales,
 	SUM(CASE WHEN order_date BETWEEN DATEADD(DAY, -180, l.latest_order_date) AND DATEADD(DAY, -91, l.latest_order_date) THEN sales END) AS previous_180_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.calender c
-	ON s.order_date = c.date
+	ON o.order_date = c.date
 CROSS JOIN latest_order_date_cte l
 GROUP BY 
 	day_name,
@@ -39,61 +39,70 @@ ORDER BY previous_90_sales DESC;
 
 SELECT
 	day_name,
+	day_of_week,
 	SUM(sales) AS total_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.calender c
-	ON s.order_date = c.date
+	ON o.order_date = c.date
 WHERE year =  2017 AND month = 1
-GROUP BY day_name
+GROUP BY 
+	day_name,
+	day_of_week
 ORDER BY total_sales DESC;
 
 SELECT TOP 10
 	CONVERT(VARCHAR(MAX), product_name) AS product_name,
-	s.product_id,
+	o.product_id,
 	SUM(sales) AS total_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.products p
-	ON s.product_id = p.product_id
+	ON o.product_id = p.product_id
 WHERE order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
 	AND discount = 0.00
 GROUP BY 
 	CONVERT(VARCHAR(MAX), product_name),
-	s.product_id
+	o.product_id
 ORDER BY total_sales DESC;
 
 WITH unsold_products_cte AS (
 	SELECT p.product_id
 	FROM retail.products p
-	LEFT JOIN retail.sales s
-		ON p.product_id = s.product_id
+	LEFT JOIN retail.orders o
+		ON p.product_id = o.product_id
 	AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
-WHERE s.product_id IS NULL
+WHERE o.product_id IS NULL
 )
 SELECT TOP 30 
-	product_id,
+	o.product_id,
+	CONVERT(VARCHAR(MAX), p.product_name),
 	COUNT(*) AS count
-FROM retail.sales s
-WHERE product_id IN (SELECT product_id FROM unsold_products_cte)
-GROUP BY s.product_id
+FROM retail.orders o
+JOIN retail.products p
+	ON o.product_id = p.product_id
+WHERE o.product_id IN (SELECT product_id FROM unsold_products_cte)
+GROUP BY 
+	o.product_id,
+	CONVERT(VARCHAR(MAX), p.product_name)
 ORDER BY count DESC;
 
+/*
 SELECT *
 FROM retail.products p
 WHERE NOT EXISTS (
     SELECT 1 
-    FROM retail.sales s
-    WHERE s.product_id = p.product_id
+    FROM retail.orders o
+    WHERE o.product_id = p.product_id
     AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')  -- Only checking sales in December
-);
+);*/
 
 WITH product_name_cte AS (
 	SELECT
 		order_id,
-		s.product_id,
+		o.product_id,
 		product_name
-	FROM retail.sales s
+	FROM retail.orders o
 	JOIN retail.products p
-		ON s.product_id = p.product_id
+		ON o.product_id = p.product_id
 ),
 product_combiantion_cte AS (
 	SELECT 
@@ -122,16 +131,16 @@ HAVING count(*) > 1;
 WITH test_cte AS (
 	SELECT TOP 10
 		CONVERT(VARCHAR(MAX), product_name) AS product_name,
-		s.product_id,
+		o.product_id,
 		SUM(sales) AS total_sales
-	FROM retail.sales s
+	FROM retail.orders o
 	JOIN retail.products p
-		ON s.product_id = p.product_id
+		ON o.product_id = p.product_id
 	--WHERE order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
 		--AND discount = 0.00
 	GROUP BY 
 		CONVERT(VARCHAR(MAX), product_name),
-		s.product_id
+		o.product_id
 )
 SELECT *
 FROM test_cte t
@@ -142,18 +151,18 @@ LEFT JOIN #product_combination_temp p
 WITH unsold_products_cte AS (
 	SELECT p.product_id
 	FROM retail.products p
-	LEFT JOIN retail.sales s
-		ON p.product_id = s.product_id
+	LEFT JOIN retail.orders o
+		ON p.product_id = o.product_id
 	AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
-WHERE s.product_id IS NULL
+WHERE o.product_id IS NULL
 ),
 top_30_unsold_products_cte AS (
 	SELECT TOP 30 
 		product_id,
 		COUNT(*) AS count
-	FROM retail.sales s
+	FROM retail.orders
 	WHERE product_id IN (SELECT product_id FROM unsold_products_cte)
-	GROUP BY s.product_id
+	GROUP BY product_id
 )
 SELECT *
 FROM top_30_unsold_products_cte t
@@ -167,34 +176,34 @@ LEFT JOIN #product_combination_temp p
 SELECT 
 	state,
 	SUM(sales) AS total_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.geographic_locations g
-	ON s.location_id = g.location_id
+	ON o.location_id = g.location_id
 GROUP BY state
 ORDER BY total_sales;
 
 --history main focus on jan
 SELECT TOP 10
 	CONVERT(VARCHAR(MAX), product_name) AS product_name,
-	s.product_id,
+	o.product_id,
 	SUM(sales) AS total_sales
-FROM retail.sales s
+FROM retail.orders o
 JOIN retail.products p
-	ON s.product_id = p.product_id
+	ON o.product_id = p.product_id
 JOIN retail.calender c
-	ON s.order_date = c.date
+	ON o.order_date = c.date
 WHERE year = 2017 
 	AND month = 1
 	AND discount = 0.00
 GROUP BY 
 	CONVERT(VARCHAR(MAX), product_name),
-	s.product_id
+	o.product_id
 ORDER BY total_sales DESC; 
 
 SELECT 
 	SUM(CASE WHEN discount = 0.0 THEN sales END) AS total_sales_without_dis,
 	SUM(CASE WHEN discount <> 0.0 THEN sales END) AS total_sals_with_dis
-FROM retail.sales
+FROM retail.orders
 WHERE YEAR(order_date) = 2017 
 	AND MONTH(order_date) = 1;
 
@@ -204,7 +213,7 @@ SELECT
 	SUM(sales) AS total_sales,
 	SUM(profit) AS total_profits,
 	SUM(profit) / SUM(sales) AS profit_ratio
-FROM retail.sales
+FROM retail.orders
 WHERE discount <> 0.00
 	AND YEAR(order_date) = 2017 
 	AND MONTH(order_date) = 1
@@ -215,5 +224,5 @@ SELECT
 	returned,
 	SUM(sales) AS total_sales,
 	ROUND(SUM(sales) * 100.0 / SUM(SUM(sales)) OVER(), 2) AS percent_sales
-FROM retail.sales
+FROM retail.orders
 GROUP BY returned;
