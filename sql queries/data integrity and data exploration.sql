@@ -4,7 +4,7 @@ GO
 -- Product Segmentation and Discount Strategy for Seasonal Sales Optimization.
 -- Check data indegrity.
 SELECT *
-FROM retail.sales
+FROM retail.orders
 WHERE order_date IS NULL
 	OR ship_date IS NULL
 	OR ship_mode IS NULL

@@ -1,8 +1,6 @@
 USE RetailSupplyChainDB;
 GO
 
--- Analysis 
--- FIRST OF ALL, WE NEED TO SEE THE OVERALL SALES TREND FOR OUR COMPANY.
 SELECT
 	year,
 	quarter_q AS quarter,
@@ -53,7 +51,7 @@ ORDER BY total_sales DESC;
 SELECT TOP 10
 	CONVERT(VARCHAR(MAX), product_name) AS product_name,
 	o.product_id,
-	SUM(sales) AS total_sales
+	SUM(sales) AS total_sales INTO #top_10_products
 FROM retail.orders o
 JOIN retail.products p
 	ON o.product_id = p.product_id
@@ -69,21 +67,24 @@ WITH unsold_products_cte AS (
 	FROM retail.products p
 	LEFT JOIN retail.orders o
 		ON p.product_id = o.product_id
-	AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
-WHERE o.product_id IS NULL
+			AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
+	WHERE o.product_id IS NULL
 )
 SELECT TOP 30 
 	o.product_id,
-	CONVERT(VARCHAR(MAX), p.product_name),
-	COUNT(*) AS count
+	CONVERT(VARCHAR(MAX), p.product_name) AS product_name,
+	COUNT(*) AS total_counts INTO #top_30_less_unsold_products
 FROM retail.orders o
 JOIN retail.products p
 	ON o.product_id = p.product_id
-WHERE o.product_id IN (SELECT product_id FROM unsold_products_cte)
+WHERE o.product_id IN (
+	SELECT product_id 
+	FROM unsold_products_cte
+	)
 GROUP BY 
 	o.product_id,
 	CONVERT(VARCHAR(MAX), p.product_name)
-ORDER BY count DESC;
+ORDER BY total_counts DESC;
 
 /*
 SELECT *
@@ -123,66 +124,33 @@ SELECT
 	p1_id,
 	CONVERT(VARCHAR(MAX), p2_name) AS p2_name,
 	p2_id,
-	COUNT(*) AS count INTO #product_combination_temp
+	COUNT(*) AS counts INTO #product_combination_temp
 FROM product_combiantion_cte
 GROUP BY CONVERT(VARCHAR(MAX), p1_name), p1_id, CONVERT(VARCHAR(MAX), p2_name), p2_id
 HAVING count(*) > 1;
 
-WITH test_cte AS (
-	SELECT TOP 10
-		CONVERT(VARCHAR(MAX), product_name) AS product_name,
-		o.product_id,
-		SUM(sales) AS total_sales
-	FROM retail.orders o
-	JOIN retail.products p
-		ON o.product_id = p.product_id
-	--WHERE order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
-		--AND discount = 0.00
-	GROUP BY 
-		CONVERT(VARCHAR(MAX), product_name),
-		o.product_id
-)
-SELECT *
-FROM test_cte t
+SELECT	
+	p1_name,
+	p1_id,
+	p2_name,
+	p2_id,
+	counts
+FROM #top_10_products t
 LEFT JOIN #product_combination_temp p
 	ON t.product_id = p.p1_id OR t.product_id = p.p2_id
+WHERE p1_id IS NOT NULL;
 
-
-WITH unsold_products_cte AS (
-	SELECT p.product_id
-	FROM retail.products p
-	LEFT JOIN retail.orders o
-		ON p.product_id = o.product_id
-	AND order_date BETWEEN DATEADD(DAY, -90, '2017-12-30') AND DATEADD(DAY, -1, '2017-12-30')
-WHERE o.product_id IS NULL
-),
-top_30_unsold_products_cte AS (
-	SELECT TOP 30 
-		product_id,
-		COUNT(*) AS count
-	FROM retail.orders
-	WHERE product_id IN (SELECT product_id FROM unsold_products_cte)
-	GROUP BY product_id
-)
-SELECT *
-FROM top_30_unsold_products_cte t
-LEFT JOIN #product_combination_temp p
-	ON t.product_id = p.p1_id OR t.product_id = p.p2_id
-
-
--- needs work for production combination with top 30 or top 10
-
--- optins
 SELECT 
-	state,
-	SUM(sales) AS total_sales
-FROM retail.orders o
-JOIN retail.geographic_locations g
-	ON o.location_id = g.location_id
-GROUP BY state
-ORDER BY total_sales;
+	p1_name,
+	p1_id,
+	p2_name,
+	p2_id,
+	counts
+FROM #top_30_less_unsold_products t
+LEFT JOIN #product_combination_temp p
+	ON t.product_id = p.p1_id OR t.product_id = p.p2_id
+WHERE p1_id IS NOT NULL;
 
---history main focus on jan
 SELECT TOP 10
 	CONVERT(VARCHAR(MAX), product_name) AS product_name,
 	o.product_id,
@@ -198,31 +166,92 @@ WHERE year = 2017
 GROUP BY 
 	CONVERT(VARCHAR(MAX), product_name),
 	o.product_id
-ORDER BY total_sales DESC; 
+ORDER BY total_sales DESC;
+
+DROP TABLE IF EXISTS #best_seller_products;
+WITH sales_summary AS (
+    SELECT 
+        product_id, 
+        SUM(sales) AS total_revenue, 
+        SUM(quantity) AS total_quantity
+    FROM retail.orders
+    GROUP BY product_id
+), thresholds AS (
+    SELECT DISTINCT
+        PERCENTILE_CONT(0.2) WITHIN GROUP (ORDER BY total_quantity DESC) OVER() AS quantity,
+        PERCENTILE_CONT(0.2) WITHIN GROUP (ORDER BY total_revenue DESC) OVER() AS revenue
+    FROM sales_summary
+), categorized_products AS (
+    SELECT 
+        ss.product_id, 
+        ss.total_revenue, 
+        ss.total_quantity,
+        CASE 
+            WHEN ss.total_quantity > t.quantity --(SELECT median_quantity FROM thresholds) 
+                 AND ss.total_revenue > t.revenue
+                 THEN 'Best Seller Product'
+            ELSE 'Normal Product'
+        END AS product_category
+    FROM sales_summary ss
+	CROSS JOIN thresholds t
+)
+SELECT DISTINCT product_id INTO #best_seller_products
+FROM categorized_products 
+WHERE product_category = 'Best Seller Product';
+
+with top_10_best_selling_jan as (
+	SELECT TOP 10
+		CONVERT(VARCHAR(MAX), product_name) AS product_name,
+		o.product_id,
+		discount,
+		SUM(sales) AS total_sales,
+		SUM(quantity) AS total_qty,
+		SUM(profit) AS total_profits
+	FROM retail.orders o
+	JOIN retail.products p
+		ON o.product_id = p.product_id
+	JOIN retail.calender c
+		ON o.order_date = c.date
+	WHERE year = 2017 
+		AND month = 1
+	GROUP BY 
+		CONVERT(VARCHAR(MAX), product_name),
+		o.product_id,
+		discount
+	ORDER BY total_sales DESC
+)
 
 SELECT 
-	SUM(CASE WHEN discount = 0.0 THEN sales END) AS total_sales_without_dis,
-	SUM(CASE WHEN discount <> 0.0 THEN sales END) AS total_sals_with_dis
-FROM retail.orders
-WHERE YEAR(order_date) = 2017 
-	AND MONTH(order_date) = 1;
+	product_name,
+	t.product_id, 
+	discount, 
+	total_sales, 
+	total_qty,
+	total_profits,
+	s.product_id AS best_selling_product_id,
+	CASE WHEN discount = 0.0 THEN total_profits ELSE ((total_sales / (1 - discount)) - total_profits) - total_sales END AS profit_without_discounts
+FROM top_10_best_selling_jan t 
+LEFT join #best_seller_products s 
+	ON t.product_id = s.product_id
+WHERE discount <> 0.0 
+	AND s.product_id IS NOT NULL;
 
 SELECT 
 	discount,
-	COUNT(*) AS count,
+	COUNT(*) AS dis_counts,
 	SUM(sales) AS total_sales,
 	SUM(profit) AS total_profits,
-	SUM(profit) / SUM(sales) AS profit_ratio
+	ROUND(SUM(profit) * 100.0 / SUM(sales), 2) AS profit_ratio
 FROM retail.orders
-WHERE discount <> 0.00
-	AND YEAR(order_date) = 2017 
+WHERE YEAR(order_date) = 2017 
 	AND MONTH(order_date) = 1
 GROUP BY discount
 ORDER BY total_sales DESC;
 
-SELECT
-	returned,
-	SUM(sales) AS total_sales,
-	ROUND(SUM(sales) * 100.0 / SUM(SUM(sales)) OVER(), 2) AS percent_sales
+SELECT 
+	SUM(CASE WHEN discount = 0.0 THEN sales END) AS total_sales_without_dis,
+	SUM(CASE WHEN discount <> 0.0 THEN sales END) AS total_sals_with_dis,
+	ROUND(SUM(CASE WHEN discount <> 0.0 THEN sales END) * 100.0 / SUM(sales), 2) AS sales_with_dis_percent
 FROM retail.orders
-GROUP BY returned;
+WHERE YEAR(order_date) = 2017 
+	AND MONTH(order_date) = 1;
