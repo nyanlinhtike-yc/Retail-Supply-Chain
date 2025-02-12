@@ -135,4 +135,4 @@ EXEC retail.InsertData 'orders', 'orders';
 
 ![s1](../images/s1.png)
 
-[Here](./Data%20Exploration.md) we go to the next step.
+[Here](./Validating%20Data%20Integrity.md) we go to the next step.

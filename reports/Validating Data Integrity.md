@@ -1,10 +1,10 @@
 # Validating Data Integrity
 
-## Checking Duplicated Values
+## Check Duplicated Values
 
-We are ensure that there is no duplicated values in the `orders` table.
+We ensure that there is no duplicated values in the `orders` table.
 
-```SQL
+```sql
 WITH check_duplicates_cte AS (
 	SELECT 
 		*,
@@ -31,33 +31,33 @@ FROM check_duplicates_cte
 WHERE row_num > 1;
 ```
 
-<img alt="c1" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/c1.png">
+![c1](../images/c1.png)
 
-How about the `customers` table?
+**How about the `customers` table?**
 
-```SQL
+```sql
 SELECT *
 FROM retail.customers
 WHERE customer_name IS NULL
 	OR segment IS NULL;
 ```
 
-<img alt="c2" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/c2.png">
+![c2](../images/c2.png)
 
-How about the `geographic_locations` table?
+**How about the `geographic_locations` table?**
 
-```SQL
+```sql
 SELECT *
 FROM retail.geographic_locations
 WHERE country IS NULL
 	OR region IS NULL;
 ```
 
-<img alt="c3" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/c3.png">
+![c3](../images/c3.png)
 
-How about the `products` table?
+**How about the `products` table?**
 
-```SQL
+```sql
 SELECT *
 FROM retail.products
 WHERE category IS NULL
@@ -65,13 +65,15 @@ WHERE category IS NULL
 	OR product_name IS NULL;
 ```
 
-<img alt="c4" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/c4.png">
+![c4](../images/c4.png)
 
-## Checking Outliers
+---
 
-We are going to check any outliers from numerial values of `orders` table.
+## Check Outliers
 
-```SQL
+We check any outliers from numerial values of `orders` table.
+
+```sql
 SELECT
 	AVG(sales) AS avg_sales,
 	MIN(sales) AS min_sales,
@@ -94,21 +96,22 @@ SELECT DISTINCT
 FROM retail.orders;
 ```
 
-<img alt="c5" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/c5.png">
+![c5](../images/c5.png)
 
-*The average and median values are significantly higher than expected, which may indicate the presence of numerous outliers in this table. Let's analyze the number of outliers.*
+*The average and median values are significantly higher than expected, which may indicate the presence of numerous outliers in this table.*
 
-```SQL
+Let's analyze the number of outliers.
+
+```sql
 SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM retail.orders) AS outliers_amounts
 FROM retail.orders
 WHERE sales < (SELECT DISTINCT PERCENTILE_CONT(0.05) WITHIN GROUP (ORDER BY sales) OVER() FROM retail.orders)
 	OR sales > (SELECT DISTINCT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY sales) OVER() FROM retail.orders);
 ```
 
-<img alt="c6" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/c6.png">
+![c6](../images/c6.png)
 
-*Even though outliers account for 10% of sales, their related values should not be removed due to the **diversity of products**. Instead of removing these values, we will perform a **segment analysis** in the next step based on the `sales` column.*
+> [!NOTE]
+> Even though outliers account for 10% of sales, their related values should not be removed due to the **diversity of products**. Instead of removing these values, we will perform a **segment analysis** in the next step based on the `sales` column.
 
-[Here] we go to the next step.
-
-[Here]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/blob/main/reports/Data%20Exploration.md
+[Here](./Data%20Exploration.md) we go to the next step.

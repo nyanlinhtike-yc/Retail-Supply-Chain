@@ -1,12 +1,12 @@
 # Diving into the Analysis
 
-We are now conducting an in-depth analysis to determine which products and product combinations should be prioritized for the upcoming seasons. Additionally, we are analyzing the optimal discount percentage needed to maximize sales and revenue especially on Q1 January.
+We conduct an in-depth analysis to determine which products and product combinations should be prioritized for the **upcoming seasons**. In addition, we analyze the optimal discount percentage needed to **maximize sales and revenue** especially on **Q1 January**.
 
 ## Sales Trend
 
-First, we are analyzing the overall sales trend in Retail Sales to understand our current situation.
+First, we analyst the overall sales trend in **Retail Sales** to understand our current situation.
 
-```SQL
+```sql
 SELECT
 	year,
 	quarter_q AS quarter,
@@ -25,17 +25,18 @@ GROUP BY
 ORDER BY total_sales DESC;
 ```
 
-*In this section, we present visual graphics\* instead of table results, as they provide clearer insights.*
+*In this section, we present visual graphics instead of table results, as they provide clearer insights.*
 
-> *Note: All visual grpahics are generated using **Power BI**.*
+> [!NOTE]
+> All visual grpahics are generated using **Power BI**.
 
-<img alt="a1" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a1.png">
+![a1](../images/a1.png)
 
-The sales trend appears to be upward, indicating a healthy growth pattern. However, there is a slight decline in Q2, which is noteworthy. However, a deeper analysis of this trend is beyond our primary objective.
+*The sales trend appears to be upward, indicating a healthy growth pattern. However, there is a slight decline in Q2, which is noteworthy. However, a deeper analysis of this trend is beyond our primary objective.*
 
-Now, we focus on the day-of-week patterns for the current trend based on the past 90 and 180 days to support our upcoming discount event strategy.
+Now, we focus on the day-of-week patterns for the current trend based on the previous 90 and 180 days to support our upcoming discount event strategy.
 
-```SQL
+```sql
 WITH latest_order_date_cte AS (
 	SELECT MAX(order_date) AS latest_order_date FROM retail.orders
 )
@@ -54,13 +55,13 @@ GROUP BY
 ORDER BY previous_90_sales DESC;
 ```
 
-<img alt="a2" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a2.png">
+![a2](../images/a2.png)
 
-Friday and Sunday are the best days to start a discount event. Monday has its own steady sales, while Thursday acts as a booster for the weekend.
+*Friday and Sunday are the optimal days to launch a discount event. Monday has its own steady sales, while Thursday acts as a booster for the weekend.*
 
-Since most retail businesses follow seasonal patterns, we are also analyzing day-of-week trends for January of the previous year.
+Since most retail businesses follow **seasonal patterns**, we identify day-of-week trends for January of the previous year.
 
-```SQL
+```sql
 SELECT
 	day_name,
 	day_of_week,
@@ -75,19 +76,19 @@ GROUP BY
 ORDER BY total_sales DESC;
 ```
 
-<img alt="a3" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a3.png">
+![a3](../images/a3.png)
 
-The trend appears similar to the previous analysis, except for Friday.
+*The trend appears similar to the previous analysis, except for Friday.*
 
 ---
 
 ## Product Segmantation
 
-To maximize sales during the discount event, we aim to combine two factors: currently trending products and less frequently sold products. By strategically pairing high-demand items with underperforming ones, we can optimize inventory movement and drive overall sales. 
+To maximize sales during the discount event, we aim to combine two factors: currently trending products and less frequently sold products. By strategically pairing **high-demand items with underperforming ones**, we can optimize inventory movement and drive overall sales.
 
-Therefore, we are analyzing the top 10 trending products based on sales from the past 90 days.
+Therefore, we analyze the top 10 trending products based on sales from the previous 90 days.
 
-```SQL
+```sql
 SELECT TOP 10
 	CONVERT(VARCHAR(MAX), product_name) AS product_name,
 	o.product_id,
@@ -105,11 +106,11 @@ ORDER BY total_sales DESC;
 
 *We are only considering truly trending products without discounts.*
 
-<img alt="a4" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a4.png">
+![a4](../images/a4.png)
 
-Next, we are analyzing the 30 least frequently sold products based on order volume over the past 90 days. While there are many products with low sales, we are intentionally selecting relatively more frequently sold items for this event. This decision is based on overall sales trends since January sales are lower compared to other months, **combining slow-selling items with a slow sales month could result in an unappearling discount event**.
+Next, we analyze the top 30 least frequently sold products based on order volume over the previous 90 days. While there are many products with low sales, we intentionally select relatively more frequently sold items for this event. This decision is based on overall sales trends since January sales are lower compared to other months, **combining slow-selling items with a slow sales month could result in an unappearling discount event**.
 
-```SQL
+```sql
 WITH unsold_products_cte AS (
 	SELECT p.product_id
 	FROM retail.products p
@@ -137,13 +138,13 @@ ORDER BY total_counts DESC;
 
 *Due to the length of the result, only a portion is displayed.*
 
-<img alt="a5" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a5.png">
+![a5](../images/a5.png)
 
-We are analyzing product combinations to understand purchasing patterns, such as which items are frequently bought together.
+We also analyze product combinations to understand **purchasing patterns**, such as which items are frequently bought together.
 
 First, we need to create `product_combination_temp` temporary table to future calculations.
 
-```SQL
+```sql
 WITH product_name_cte AS (
 	SELECT
 		order_id,
@@ -180,7 +181,7 @@ HAVING count(*) > 1;
 
 Products from the top 10 bestsellers that were purchased together with other items.
 
-```SQL
+```sql
 SELECT	
 	p1_name,
 	p1_id,
@@ -193,11 +194,11 @@ LEFT JOIN #product_combination_temp p
 WHERE p1_id IS NOT NULL;
 ```
 
-<img alt="a6" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a6.png">
+![a6](../images/a6.png)
 
 Products from the top 30 less frequently sold items that were purchased together with other items.
 
-```SQL
+```sql
 SELECT 
 	p1_name,
 	p1_id,
@@ -210,13 +211,14 @@ LEFT JOIN #product_combination_temp p
 WHERE p1_id IS NOT NULL;
 ```
 
-<img alt="a7" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a7.png">
+![a7](../images/a7.png)
 
-We need to consider that some high-selling products are seasonal, such as summer and winter items. However, since there are no explicit seasonal categories assigned to each product, we are analyzing the best-selling products based on January sales. Our goal is to align trending products, seasonal products, and least frequently sold products for a balanced discount strategy.
+We need to consider that some high-selling products are seasonal, such as summer and winter items. However, since there are no explicit seasonal categories assigned to each product, we analyze the best-selling products based on **January sales**. "Our goal is to align trending products, seasonal products, and least frequently sold products for a balanced discount strategy".
 
-*While a full seasonal analysis requires multi-year data and deeper segmentation, this project demonstrates a simplified approach that can be expanded further.*
+> [!NOTE]
+> While a full seasonal analysis requires multi-year data and deeper segmentation, this project demonstrates a simplified approach that can be expanded further.
 
-```SQL
+```sql
 SELECT TOP 10
 	CONVERT(VARCHAR(MAX), product_name) AS product_name,
 	o.product_id,
@@ -235,7 +237,7 @@ GROUP BY
 ORDER BY total_sales DESC; 
 ```
 
-<img alt="a8" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a8.png">
+![a8](../images/a8.png)
 
 ---
 
@@ -245,7 +247,7 @@ First, We are going to create temporary table for best selling products.
 
 > *"In this case, we defined the best-selling products based on the top 20th percentile of total sales and total quantity that are filtering out low-revenue, high-quantity items and high-revenue, low-quantity items. However, in a real-world scenario, the definition of best-selling products can depend on business objectives."*
 
-```SQL
+```sql
 DROP TABLE IF EXISTS #best_seller_products;
 WITH sales_summary AS (
     SELECT 
@@ -278,9 +280,9 @@ FROM categorized_products
 WHERE product_category = 'Best Seller Product';
 ```
 
-We are comparing the top 10 products for the January with best selling products of all times.
+We compare the top 10 products for the January with best selling products of all times.
 
-```SQL
+```sql
 with top_10_best_selling_jan as (
 	SELECT TOP 10
 		CONVERT(VARCHAR(MAX), product_name) AS product_name,
@@ -318,13 +320,13 @@ LEFT join #best_seller_products s
 
 *This is a intermediate step to get better understand on the how our logic works.*
 
-<img alt="a9" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a9.png">
+![a9](../images/a9.png)
 
-We are now optimizing discounts on high-demand products by reducing them to offer discounts strategically and maximize revenue.
+We optimize discounts on high-demand products by reducing them to offer discounts strategically and maximize revenue.
 
 > *"This is a simplified approach that can be further expanded using a real-world dataset."*
 
-```SQL
+```sql
 with top_10_best_selling_jan as (
 	SELECT TOP 10
 		CONVERT(VARCHAR(MAX), product_name) AS product_name,
@@ -363,9 +365,11 @@ WHERE discount <> 0.0
 	AND s.product_id IS NOT NULL;
 ```
 
+![a10](../images/a10.png)
+
 We also want to know total sales and profit ratio based on each discount.
 
-```SQL
+```sql
 SELECT 
 	discount,
 	COUNT(*) AS dis_counts,
@@ -379,11 +383,11 @@ GROUP BY discount
 ORDER BY total_sales DESC;
 ```
 
-<img alt="a10" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a10.png">
+![a11](../images/a11.png)
 
 Discounted sales contribute to 41% of the total revenue.
 
-```SQL
+```sql
 SELECT 
 	SUM(CASE WHEN discount = 0.0 THEN sales END) AS total_sales_without_dis,
 	SUM(CASE WHEN discount <> 0.0 THEN sales END) AS total_sals_with_dis,
@@ -393,13 +397,9 @@ WHERE YEAR(order_date) = 2017
 	AND MONTH(order_date) = 1;
 ```
 
-<img alt="a11" src="https://raw.githubusercontent.com/nyanlinhtike-yc/Retail-Supply-Chain/refs/heads/main/images/a11.png">
-
+![a12](../images/a12.png)
 
 If you are looking for key insights and recommendations from this analysis, here are the main takeaways:
 
-* [Key Insights]
-* [Recommendations]
-
-[Key Insights]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#key-insights-
-[Recommendations]: https://github.com/nyanlinhtike-yc/Retail-Supply-Chain/tree/main?tab=readme-ov-file#recomemdations-
+* [Key Insights](../README.md/#key-insights-)
+* [Recommendations](../README.md/#recommendations-)
